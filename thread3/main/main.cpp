@@ -22,8 +22,8 @@ unsigned int __stdcall WorkerThread_H(void *param)
 			::GetThreadPriority(::GetCurrentThread()),
 			::GetCurrentThreadId());
 		
-#pragma omp parallel for
-		for (int i = 0; i < 20000000; i++)
+#pragma omp for
+		for (int i = 0; i < 200000000; i++)
 		{
 			double x = 1;
 			val += x;
@@ -39,8 +39,8 @@ unsigned int __stdcall WorkerThread_H(void *param)
 
 #pragma omp parallel num_threads(2)
 	{
-#pragma omp parallel for
-		for (int i = 0; i < 20000000; i++)
+#pragma omp for
+		for (int i = 0; i < 200000000; i++)
 		{
 			double x = 1;
 			val += x;
@@ -66,8 +66,8 @@ unsigned int __stdcall WorkerThread_L(void *param)
 			::GetThreadPriority(::GetCurrentThread()),
 			::GetCurrentThreadId());
 		
-#pragma omp parallel for
-		for (int i = 0; i < 500000000; i++)
+#pragma omp for
+		for (int i = 0; i < 1000000000; i++)
 		{
 			double x = 1;
 			val += x;
@@ -141,7 +141,7 @@ int main()
 	printf("pid:%u\n", ::GetCurrentProcessId());
 	getchar();
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		testfunc();
 	}

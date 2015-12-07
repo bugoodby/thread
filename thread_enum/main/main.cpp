@@ -4,6 +4,7 @@
 #include <process.h>
 #include <iostream>
 #include <tlhelp32.h>
+#include <list>
 
 //#define PRINTF printf
 #define PRINTF 
@@ -32,21 +33,27 @@ private:
 int GetThreadList( std::list<DWORD> &list )
 {
 	int count = 0;
+	
+	printf("---\n");
 	list.clear();
+	DWORD pid = GetCurrentProcessId();
 	HANDLE hSnapshot = ::CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
 	if ( hSnapshot != INVALID_HANDLE_VALUE ) {
 		THREADENTRY32 te32;
 		te32.dwSize = sizeof(THREADENTRY32);
 		if ( ::Thread32First(hSnapshot, &te32) ) {
 			do {
-				list.push_back(te32.th32ThreadID);
-				printf( "%d: %6u, %6u, %6u, %6u, %6u, %08X\n", 
-					++count, te32.cntUsage, te32.th32OwnerProcessID, te32.th32ThreadID, 
-					te32.tpBasePri, te32.tpDeltaPri, te32.dwFlags );
+				if ( pid == te32.th32OwnerProcessID ) {
+					list.push_back(te32.th32ThreadID);
+					printf( "%d: %6u, %6u, %6u, %6u, %6u, %08X\n", 
+						++count, te32.cntUsage, te32.th32OwnerProcessID, te32.th32ThreadID, 
+						te32.tpBasePri, te32.tpDeltaPri, te32.dwFlags );
+				}
 			} while ( ::Thread32Next(hSnapshot, &te32) );
 		}
 		::CloseHandle(hSnapshot);
 	}
+	printf("---\n");
 	return count;
 }
 

@@ -22,7 +22,7 @@ unsigned int __stdcall WorkerThread_H(void *param)
 			::GetThreadPriority(::GetCurrentThread()),
 			::GetCurrentThreadId());
 		
-#pragma omp parallel for
+#pragma omp for
 		for (int i = 0; i < 100000000; i++)
 		{
 			double x = 1;
@@ -49,8 +49,8 @@ unsigned int __stdcall WorkerThread_L(void *param)
 			::GetThreadPriority(::GetCurrentThread()),
 			::GetCurrentThreadId());
 		
-#pragma omp parallel for
-		for (int i = 0; i < 500000000; i++)
+#pragma omp for
+		for (int i = 0; i < 1000000000; i++)
 		{
 			double x = 1;
 			val += x;
